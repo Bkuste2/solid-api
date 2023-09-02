@@ -1,30 +1,42 @@
-import {NextFunction, Request, Response} from "express";
-import {UserService} from "./services/user.service";
-import {User} from "./entities/user.entity";
+import { NextFunction, Request, Response } from 'express'
+import { UserService } from './services/user.service'
+import { User } from './entities/user.entity'
 
 export class UserController {
-    constructor(private userService: UserService) {
-    }
+  constructor(private userService: UserService) {}
 
-    async findAll(req: Request, res: Response, next: NextFunction) {
-        try {
-            return res.send(await this.userService.findAll());
-        } catch (error) {
-            next(error);
-        }
+  async findAll(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response<User[]> | void> {
+    try {
+      const users = await this.userService.findAll()
+      return res.status(200).send(users)
+    } catch (error) {
+      next(error)
     }
+  }
 
-    async findByEmail(req: Request, res: Response): Promise<Response<User>> {
-        const {email} = req.params;
-        return res.send(await this.userService.findByEmail(email));
+  async findByEmail(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response<User> | void> {
+    const { email } = req.params
+    try {
+      return res.send(await this.userService.findByEmail(email))
+    } catch (error) {
+      next(error)
     }
+  }
 
-    async create(req: Request, res: Response, next: NextFunction) {
-        const {name, email, password} = req.body;
-        try {
-            return res.send(await this.userService.create({name, email, password}));
-        } catch (error) {
-            next(error);
-        }
+  async create(req: Request, res: Response, next: NextFunction) {
+    const { name, email, password } = req.body
+    try {
+      return res.send(await this.userService.create({ name, email, password }))
+    } catch (error) {
+      next(error)
     }
+  }
 }

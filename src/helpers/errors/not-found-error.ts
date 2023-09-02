@@ -1,7 +1,7 @@
-import {DefaultApiError} from "./default-api-error";
+import { DefaultApiError } from './default-api-error'
 
 export class NotFoundError extends DefaultApiError {
-    constructor(message: string) {
-        super(message, 404)
-    }
+  constructor(message: string) {
+    super(message, 404)
+  }
 }
