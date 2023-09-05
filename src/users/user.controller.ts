@@ -1,6 +1,7 @@
-import { NextFunction, Request, Response } from 'express'
-import { UserService } from './services/user.service'
-import { User } from './entities/user.entity'
+import { NextFunction, Request, Response } from "express";
+import { UserService } from "./services/user.service";
+import { User } from "./entities/user.entity";
+import { DefaultApiError } from "../helpers/errors/default-api-error";
 
 export class UserController {
   constructor(private userService: UserService) {}
@@ -11,10 +12,10 @@ export class UserController {
     next: NextFunction,
   ): Promise<Response<User[]> | void> {
     try {
-      const users = await this.userService.findAll()
-      return res.status(200).send(users)
+      const users = await this.userService.findAll();
+      return res.status(200).send(users);
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
@@ -23,20 +24,20 @@ export class UserController {
     res: Response,
     next: NextFunction,
   ): Promise<Response<User> | void> {
-    const { email } = req.params
+    const { email } = req.params;
     try {
-      return res.send(await this.userService.findByEmail(email))
+      return res.send(await this.userService.findByEmail(email));
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   async create(req: Request, res: Response, next: NextFunction) {
-    const { name, email, password } = req.body
+    const { name, email, password } = req.body;
     try {
-      return res.send(await this.userService.create({ name, email, password }))
+      return res.send(await this.userService.create({ name, email, password }));
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 }
